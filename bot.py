@@ -96,7 +96,7 @@ async def process_new_word_definition_command(msg: types.Message, state: FSMCont
     try:
         conn = sqlite3.connect('vocabluary.db')
         cur = conn.cursor()
-        cur.execute(f'INSERT INTO words(user_id) VALUES("{msg.from_user.id}", "{msg.text}")')
+        cur.execute(f'INSERT INTO words(user_id, word) VALUES("{msg.from_user.id}", "{msg.text}")')
         conn.commit()
     except Exception as e:
         print(e)
