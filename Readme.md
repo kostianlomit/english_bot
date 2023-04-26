@@ -26,6 +26,12 @@ keep the conversation and remember the previous things. Basically, you can
 check your ability to use new words. You can easily check out your
 knowledge with the bot reply. 
 
+## Install
+
+To create a DB when starting on your server run **db_map.py** first. 
+I kept my tokens for the bot @English_def_Oxford_bot and for HuggingFace
+but I will delete them after the assignment check.
+
 ## How to use it? 
 
 You can use different commands to operate with the bot:
@@ -41,7 +47,7 @@ You can use different commands to operate with the bot:
 **/See_my_progress** to see the usage and the size of vocabluary
 
 ## Цитирование
-@misc{Aniemore,
+@misc{Your_personal_Oxford_Dictionary,
   author = {Artem Amentes},
   title = {English learning telegram bot in Oxford dictionary style},
   year = {2023},
