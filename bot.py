@@ -50,22 +50,23 @@ async  def process_help_command(message: types.Message):
 
 @dp.message_handler(commands = ['Main_menu'])
 async def process_help_command(message: types.Message):
-    await message.reply("How to use the bot? \n It is very easy! \nChoose Add new word if you want to add definition to"
-                        "the bot \nChoose Pick me a word, if you want to read random word", reply_markup = kb.main_keyboard)
+    await message.reply("You are in the Main menu. Now, you can choose what would you like to do.", reply_markup = kb.main_keyboard)
 
-
+@dp.message_handler(text = ['Main_menu'])
+async def process_help_command(message: types.Message):
+    await message.reply("You are in the Main menu. Now, you can choose what would you like to do.", reply_markup = kb.main_keyboard)
 
 
 @dp.message_handler(commands = ['Add_new_word'])
-async  def process_help_command(message: types.Message):
-    await message.reply("How to use the bot? \n It is very easy! \nChoose Add new word if you want to add definition to"
-                        "the bot \nChoose Pick me a word, if you want to read random word", reply_markup = kb.main_keyboard)
+async def process_new_word_command(msg: types.Message, state: FSMContext):
+    await msg.reply("Wow! Another new word! Please type the word!", reply_markup = kb.new_word_keyboard)
+    await state.set_state(FSMAdmin.Add_new_word)
 
 
 @dp.message_handler(commands = ['Start_chat'])
-async  def process_help_command(message: types.Message):
-    await message.reply("How to use the bot? \n It is very easy! \nChoose Add new word if you want to add definition to"
-                        "the bot \nChoose Pick me a word, if you want to read random word", reply_markup = kb.main_keyboard)
+async def chat_with_bot(msg: types.Message):
+    await bot.send_message(msg.from_user.id, query({"inputs": {"text": msg.text},})['generated_text'], reply_markup=kb.chat_keyboard)
+
 
 @dp.message_handler(commands = ['See_my_progress'])
 async  def process_help_command(message: types.Message):
@@ -74,18 +75,22 @@ async  def process_help_command(message: types.Message):
     cur.execute('SELECT COUNT(*) FROM words')
     result = cur.fetchone()
     conn.close()
-    await message.reply(f'The number of words in the Vocabluary is:<b>{result[0]}<b>', parse_mode='HTML', reply_markup = kb.main_keyboard)
+    await message.reply(f'The number of words in the Vocabluary is:  <b>{list(result)[0]}</b>', parse_mode='HTML', reply_markup = kb.main_keyboard)
 
 @dp.message_handler(commands=['Pick_me_a_word'])
 async def process_help_command(msg: types.Message):
-    await msg.reply("Your word is !")
+    await msg.reply("One of the words from you dictionary!")
     try:
         conn = sqlite3.connect('vocabluary.db')
         cur = conn.cursor()
-        cur.execute(f'SELECT * FROM words ORDER BY RANDOM() LIMIT 1')
+        word_from_dict = cur.execute(f'SELECT * FROM words ORDER BY RANDOM() LIMIT 1').fetchall()
         conn.close()
     except Exception as e:
         print(e)
+    word_from_dict = str(word_from_dict).split(',')
+    await bot.send_message(msg.from_user.id, text=f'<b>{word_from_dict[1]}</b>\n'
+                    f'def. - <i>{word_from_dict[2]}</i>', parse_mode='HTML', reply_markup=kb.main_keyboard )
+
 # Конец Раздел с командами
 
 # Состояние добавления слова в словарь
@@ -99,14 +104,6 @@ async def process_new_word_command(msg: types.Message, state: FSMContext):
 async def process_new_word_definition_command(msg: types.Message, state: FSMContext):
     await msg.reply("Cool! We got it!", reply_markup=kb.new_word_keyboard)
     await state.update_data(word=msg.text)
-    """try:
-        conn = sqlite3.connect('vocabluary.db')
-        cur = conn.cursor()
-        cur.execute(f'INSERT INTO words(user_id, word) VALUES("{msg.from_user.id}", "{msg.text}")')
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        print(e)"""
     await msg.reply("Now, please write your definition for this word.")
     await state.set_state(FSMAdmin.Add_new_definition)
 
@@ -147,6 +144,16 @@ async def process_help_command(msg: types.Message):
 
 # Конец раздела получения случайного слова из словаря
 
+# Раздел получения данных о количестве слов в словаре
+@dp.message_handler(text='See_my_progress')
+async  def process_help_command(message: types.Message):
+    conn = sqlite3.connect('vocabluary.db')
+    cur = conn.cursor()
+    cur.execute('SELECT COUNT(*) FROM words')
+    result = cur.fetchone()
+    conn.close()
+    await message.reply(f'The number of words in the Vocabluary is:  <b>{list(result)[0]}</b>', parse_mode='HTML', reply_markup = kb.main_keyboard)
+# Конец раздела получения данных о количестве слов в словаре
 
 
 # Раздел общения с чат ботом. Он перехватывает все сообщения, которые не отмечены командами.
@@ -154,7 +161,6 @@ async def process_help_command(msg: types.Message):
 @dp.message_handler()
 async def chat_with_bot(msg: types.Message):
     await bot.send_message(msg.from_user.id, query({"inputs": {"text": msg.text},})['generated_text'], reply_markup=kb.chat_keyboard)
-
 
 # Конец раздела общения с чат ботом. Он перехватывает все сообщения, которые не отмечены командами.
 
