@@ -1,5 +1,5 @@
 # The english learning bot
-###Best approach for English learning
+### Best approach for English learning
 
 <hr>
 Welcome to the Oxford Dictionary style English learning telegram bot. It 
@@ -17,7 +17,7 @@ Features are:
 - check the number of words in dictionary;
 - chat with AI.
 
-###AI chat is build with 
+### AI chat is build with 
 ![HuggingFaceBert](https://huggingface.co/bert-base-uncased)
 
 It can reply to user messages and be precise to the topic, however in the 
@@ -26,7 +26,7 @@ keep the conversation and remember the previous things. Basically, you can
 check your ability to use new words. You can easily check out your
 knowledge with the bot reply. 
 
-##How to use it? 
+## How to use it? 
 
 You can use different commands to operate with the bot:
 
