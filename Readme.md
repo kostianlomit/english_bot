@@ -18,7 +18,7 @@ Features are:
 - chat with AI.
 
 ### AI chat is build with 
-![HuggingFaceBert](https://huggingface.co/bert-base-uncased)
+![HuggingFace-Bert](https://huggingface.co/bert-base-uncased)
 
 It can reply to user messages and be precise to the topic, however in the 
 current vesrion we do not provide context to the bot, so it cannot
