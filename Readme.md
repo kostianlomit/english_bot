@@ -46,6 +46,9 @@ You can use different commands to operate with the bot:
                         
 **/See_my_progress** to see the usage and the size of vocabluary
 
+![Oxford Dictionary Telegram Bot](Oxford-dictionary-telegram-bot.gif)
+
+
 ## Цитирование
 @misc{Your_personal_Oxford_Dictionary,
   author = {Artem Amentes},
