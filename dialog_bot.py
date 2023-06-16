@@ -3,7 +3,7 @@
 import requests
 
 API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": "your token"}
 
 
 def query(payload):
